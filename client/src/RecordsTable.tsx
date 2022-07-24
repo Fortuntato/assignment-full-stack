@@ -36,9 +36,36 @@ function RecordsTable(props: Props) {
         },
       },
       {
+        title: "Value",
+        render: (record: ProcurementRecord) => {
+          const handleClick = (e: React.MouseEvent) => {
+            e.preventDefault();
+            setPreviewedRecord(record);
+          };
+          return (
+            <a href="#" onClick={handleClick}>
+              {record.currency} {record.value}
+            </a>
+          );
+        },
+      },
+      {
         title: "Buyer name",
         render: (record: ProcurementRecord) => record.buyer.name,
       },
+      {
+        title: "Stage",
+        render: (record: ProcurementRecord) => 
+          record.stage == "TENDER" || record.stage == "TenderIntent" 
+            ? record.closeDate == null || new Date(record.closeDate).toLocaleDateString() == "INVALID DATE"
+              ? "Open until {close_date}" // Would change the string to be: "Open (No close date available)" for a better user feedback. (SC 24/07/2022)
+              : new Date(record.closeDate) > new Date() 
+                ? "Open until " + record.closeDate
+                : "Closed"
+            : record.stage == "CONTRACT"
+              ? "Awarded on " + record.awardDate
+              : ""
+      }
     ];
   }, []);
   return (

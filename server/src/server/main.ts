@@ -52,11 +52,11 @@ async function searchRecords({
 }: RecordSearchFilters): Promise<ProcurementRecord[]> {
   if (textSearch) {
     return await sequelize.query(
-      "SELECT * FROM procurement_records WHERE title LIKE :textSearch",
+      "SELECT * FROM procurement_records WHERE title LIKE :textSearch OR description LIKE :textSearch",
       {
         model: ProcurementRecord, // by setting this sequelize will return a list of ProcurementRecord objects
         replacements: {
-          textSearch: `${textSearch}%`,
+          textSearch: `%${textSearch}%`,
         },
       }
     );
@@ -84,9 +84,14 @@ function serializeProcurementRecord(
 
   return {
     id: record.id,
+    stage: record.stage,
     title: record.title,
     description: record.description,
+    currency: record.currency,
+    value: record.value,
     publishDate: record.publish_date,
+    closeDate: record.close_date,
+    awardDate: record.award_date,
     buyer: {
       id: buyer.id,
       name: buyer.name,
