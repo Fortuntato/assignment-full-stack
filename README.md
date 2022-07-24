@@ -53,3 +53,20 @@ If for any reason the database becomes unusable, you can rebuild it using `./res
 ## The task
 
 All the instructions are available [here](https://www.notion.so/stotles/Full-stack-software-engineer-work-sample-assignment-ae7c64e08f2a42a097d16cee4bc661fc).
+
+
+## Comments by Shouyi
+The documentation to get the project setup was very clear. There was only one error in the build of the application initially that was unexpected. The code was complaining for a missing package that I had to install by running this additional command: 
+npm install --save reflect-metadata rxjs
+
+#Warm up exercises
+In the warm up exercise for the implementation of the "stage" column, the description mentions "type" column from the  table in the database, but there is no such column. Given the data expected, I supposed it's referring to "stage" instead.
+
+For the same task, the case of "TenderIntent" was not accepted as a value so I've added it in the ProcurementRecord model because I assume you wanted to include all cases existing from the database. I'm considering TenderIntent as a case of Tender.
+
+From the description: “Open until {close_date}” if close date is null or close date is in the future 
+-> There could be a case of null date or invalid date to be shown in the frontend. For now I left it as per requirement. But please check the comment in RecordsTable.tsx on line 72
+
+#Main task
+Given that I don't work with React and that I have no prior knowledge about Ant Design, I've spent some time reading up about Ant's documentation and the other links you have put in the task description. My final solution for the task, is based upon the example given in the documentation for the filters in the table (i.e. https://ant.design/components/table/?theme=dark#components-table-demo-filter-search).
+If had more time to spend I would have tried to show the filter dropdown width smaller. Because I've noticed that even though I am declaring the width size in RecordsTable.tsx on line 65, it's not being applied because the name of a buyer is very long (e.g. "NHS Supply Chain – Hotel Services Operating as North of England Commercial Procurement Collabrative (NoECPC) (who are hosted by Leeds and York Partnership NHS Foundation Trust) acting on behalf of Supply Chain Coordination Ltd").
