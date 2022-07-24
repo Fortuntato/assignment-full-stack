@@ -10,6 +10,13 @@ type Props = {
 
 function RecordsTable(props: Props) {
   const { records } = props;
+
+  // Creating the list of buyer filters by mapping the buyers name to text and value.
+  const filterOptions: any[]  = [];
+  for (let i = 0; i < records.length - 1 ; i++) {
+    filterOptions.push({text: records[i].buyer.name, value: records[i].buyer.name});
+  }
+
   const [previewedRecord, setPreviewedRecord] = React.useState<
     ProcurementRecord | undefined
   >();
@@ -52,6 +59,10 @@ function RecordsTable(props: Props) {
       {
         title: "Buyer name",
         render: (record: ProcurementRecord) => record.buyer.name,
+        filters: filterOptions,
+        onFilter: (value: string, record) => record.buyer.name.startsWith(value),
+        filterSearch: true,
+        width: "30%"
       },
       {
         title: "Stage",
