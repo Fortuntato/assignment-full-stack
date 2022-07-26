@@ -14,7 +14,10 @@ function RecordsTable(props: Props) {
   // Creating the list of buyer filters by mapping the buyers name to text and value.
   const filterOptions: any[]  = [];
   for (let i = 0; i < records.length - 1 ; i++) {
-    filterOptions.push({text: records[i].buyer.name, value: records[i].buyer.name});
+
+    // Check if it's a duplicate case
+    if(filterOptions.findIndex(x=>x.value === records[i].buyer.name) < 0)
+      filterOptions.push({text: records[i].buyer.name, value: records[i].buyer.name});
   }
 
   const [previewedRecord, setPreviewedRecord] = React.useState<
@@ -59,10 +62,9 @@ function RecordsTable(props: Props) {
       {
         title: "Buyer name",
         render: (record: ProcurementRecord) => record.buyer.name,
-        filters: filterOptions,
+        filters: filterOptions, // Select distinct element by the value 
         onFilter: (value: string, record) => record.buyer.name.startsWith(value),
-        filterSearch: true,
-        width: "30%"
+        filterSearch: true
       },
       {
         title: "Stage",
@@ -71,10 +73,10 @@ function RecordsTable(props: Props) {
             ? record.closeDate == null || new Date(record.closeDate).toLocaleDateString() == "INVALID DATE"
               ? "Open until {close_date}" // Would change the string to be: "Open (No close date available)" for a better user feedback. (SC 24/07/2022)
               : new Date(record.closeDate) > new Date() 
-                ? "Open until " + record.closeDate
+                ? "Open until " + new Date(record.closeDate).toLocaleDateString()
                 : "Closed"
             : record.stage == "CONTRACT"
-              ? "Awarded on " + record.awardDate
+              ? "Awarded on " + new Date(record.awardDate).toLocaleDateString()
               : ""
       }
     ];
